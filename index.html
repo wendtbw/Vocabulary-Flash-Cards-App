@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vocab Learner</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: grid; place-content: center; height: 100vh; background: #f0f2f5; }
+        .card-container { perspective: 1000px; }
+        .card { width: 350px; height: 200px; position: relative; transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer; }
+        .card.flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: grid; place-content: center; font-size: 1.5em; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .card-front { background: #007bff; color: white; }
+        .card-back { background: #28a745; color: white; transform: rotateY(180deg); }
+        .controls { margin-top: 20px; text-align: center; }
+        button { padding: 10px 20px; margin: 0 5px; font-size: 1em; cursor: pointer; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <div class="card" id="flashcard">
+            <div class="card-face card-front" id="word-front">
+                <!-- Word goes here -->
+            </div>
+            <div class="card-face card-back" id="definition-back">
+                <!-- Definition goes here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prev-btn">Previous</button>
+        <button id="next-btn">Next</button>
+    </div>
+
+    <script>
+        const vocabulary = [
+            { word: "Ubiquitous", definition: "Present, appearing, or found everywhere." },
+            { word: "Ephemeral", definition: "Lasting for a very short time." },
+            { word: "Mellifluous", definition: "Sweet or musical; pleasant to hear." },
+            { word: "Serendipity", definition: "The occurrence of events by chance in a happy way." },
+            { word: "Eloquent", definition: "Fluent or persuasive in speaking or writing." }
+        ];
+
+        let currentCardIndex = 0;
+        const flashcard = document.getElementById('flashcard');
+        const wordFront = document.getElementById('word-front');
+        const definitionBack = document.getElementById('definition-back');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+
+        function updateCard() {
+            wordFront.textContent = vocabulary[currentCardIndex].word;
+            definitionBack.textContent = vocabulary[currentCardIndex].definition;
+            flashcard.classList.remove('flipped'); // Reset to show word side
+        }
+
+        flashcard.addEventListener('click', () => {
+            flashcard.classList.toggle('flipped');
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentCardIndex = (currentCardIndex + 1) % vocabulary.length;
+            updateCard();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentCardIndex = (currentCardIndex - 1 + vocabulary.length) % vocabulary.length;
+            updateCard();
+        });
+
+        // Initial card display
+        updateCard();
+    </script>
+</body>
+</html>
